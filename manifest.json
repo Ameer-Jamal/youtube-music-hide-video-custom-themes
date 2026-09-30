@@ -3,9 +3,7 @@
   "name": "YouTube Music - Hide Video & Custom Themes",
   "version": "1.0.0",
   "description": "Hide the video, give your queue room to breathe, and make YouTube Music yours with custom themes and player controls.",
-  "permissions": [
-    "storage"
-  ],
+  "permissions": ["storage"],
   "action": {
     "default_popup": "popup.html",
     "default_title": "Customize YouTube Music"
@@ -18,13 +16,8 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://music.youtube.com/*"
-      ],
-      "js": [
-        "src/settings.js",
-        "src/content.js"
-      ],
+      "matches": ["https://music.youtube.com/*"],
+      "js": ["src/settings.js", "src/content.js"],
       "run_at": "document_start"
     }
   ]

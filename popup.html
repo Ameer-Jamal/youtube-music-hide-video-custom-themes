@@ -1,10 +1,135 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>YouTube Music — your way</title><link rel="stylesheet" href="popup.css"></head>
-<body>
-<header><div class="brand"><img src="icons/icon-48.png" alt=""><div><strong>Music. Your way.</strong><span>YouTube Music customizer</span></div></div><label class="switch" title="Enable extension"><input id="enabled" type="checkbox" aria-label="Enable extension"><span></span></label></header>
-<main>
-<section class="hero"><div class="eyebrow">LESS DISTRACTION. MORE MUSIC.</div><h1>Set the mood.</h1><p>A little less video. A lot more you.</p><div class="preview" id="preview" aria-label="Theme preview"><div class="preview-top"><span class="preview-dot"></span><span>YOUR NEXT FAVORITE</span><span>•••</span></div><div class="preview-track"><div class="art">♫</div><div><strong>Make room for the music</strong><small>Your playlist · Your palette</small></div></div><div class="preview-player"><span>↺</span><span>◀</span><span class="play">▶</span><span>▶</span><span>↻</span><i></i></div></div></section>
-<section><div class="section-heading"><h2>Color studio</h2><span>8 palettes</span></div><div id="themes" class="themes" role="group" aria-label="Theme presets"></div><div class="colors"><label>Canvas<input id="background" type="color"></label><label>Player<input id="player" type="color"></label><label>Accent<input id="accent" type="color"></label></div></section>
-<section><h2>Listening space</h2><label class="row"><span><strong>Hide the video</strong><small>Give your queue the whole stage</small></span><span class="switch"><input id="hideVideo" type="checkbox"><span></span></span></label><p class="hint">Visual only. Playback continues; streaming data use is unchanged.</p><label class="row"><span><strong>Always show volume</strong><small>No hovering, no guessing</small></span><span class="switch"><input id="showVolume" type="checkbox"><span></span></span></label><label class="row compact"><span>Volume percentage</span><input id="showVolumePercentage" type="checkbox"></label><label class="range-label" for="volumeWidth">Volume slider <output id="volumeWidthValue"></output></label><input id="volumeWidth" type="range" min="60" max="180" step="1"><label class="row compact"><span>Custom queue width</span><input id="customWidth" type="checkbox"></label><label class="range-label" for="queueWidth">Queue width <output id="queueWidthValue"></output></label><input id="queueWidth" type="range" min="50" max="100" step="1"><label class="range-label" for="padding">Breathing room <output id="paddingValue"></output></label><input id="padding" type="range" min="0" max="48" step="1"><label class="row compact"><span>Hide upgrade banners</span><input id="hidePromos" type="checkbox"></label></section>
-<section class="tools"><button id="export">Export settings</button><button id="import">Import settings</button><input type="file" id="file" accept="application/json,.json" hidden><button id="reset" class="quiet">Reset</button></section>
-</main><footer><span id="status" role="status" aria-live="polite">Changes apply live</span><a href="https://music.youtube.com/" target="_blank" rel="noopener">Open Music ↗</a></footer><script src="src/settings.js"></script><script src="src/popup.js"></script></body></html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YouTube Music — your way</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <img src="icons/icon-48.png" alt="" />
+        <div>
+          <strong>Music. Your way.</strong><span>YouTube Music customizer</span>
+        </div>
+      </div>
+      <label class="switch" title="Enable extension"
+        ><input
+          id="enabled"
+          type="checkbox"
+          aria-label="Enable extension" /><span></span
+      ></label>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="eyebrow">LESS DISTRACTION. MORE MUSIC.</div>
+        <h1>Set the mood.</h1>
+        <p>A little less video. A lot more you.</p>
+        <div class="preview" id="preview" aria-label="Theme preview">
+          <div class="preview-top">
+            <span class="preview-dot"></span><span>YOUR NEXT FAVORITE</span
+            ><span>•••</span>
+          </div>
+          <div class="preview-track">
+            <div class="art">♫</div>
+            <div>
+              <strong>Make room for the music</strong
+              ><small>Your playlist · Your palette</small>
+            </div>
+          </div>
+          <div class="preview-player">
+            <span>↺</span><span>◀</span><span class="play">▶</span><span>▶</span
+            ><span>↻</span><i></i>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="section-heading">
+          <h2>Color studio</h2>
+          <span>8 palettes</span>
+        </div>
+        <div
+          id="themes"
+          class="themes"
+          role="group"
+          aria-label="Theme presets"
+        ></div>
+        <div class="colors">
+          <label>Canvas<input id="background" type="color" /></label
+          ><label>Player<input id="player" type="color" /></label
+          ><label>Accent<input id="accent" type="color" /></label>
+        </div>
+      </section>
+      <section>
+        <h2>Listening space</h2>
+        <label class="row"
+          ><span
+            ><strong>Hide the video</strong
+            ><small>Give your queue the whole stage</small></span
+          ><span class="switch"
+            ><input id="hideVideo" type="checkbox" /><span></span></span
+        ></label>
+        <p class="hint">
+          Visual only. Playback continues; streaming data use is unchanged.
+        </p>
+        <label class="row"
+          ><span
+            ><strong>Always show volume</strong
+            ><small>No hovering, no guessing</small></span
+          ><span class="switch"
+            ><input
+              id="showVolume"
+              type="checkbox" /><span></span></span></label
+        ><label class="row compact"
+          ><span>Volume percentage</span
+          ><input id="showVolumePercentage" type="checkbox" /></label
+        ><label class="range-label" for="volumeWidth"
+          >Volume slider <output id="volumeWidthValue"></output></label
+        ><input
+          id="volumeWidth"
+          type="range"
+          min="60"
+          max="180"
+          step="1"
+        /><label class="row compact"
+          ><span>Custom queue width</span
+          ><input id="customWidth" type="checkbox" /></label
+        ><label class="range-label" for="queueWidth"
+          >Queue width <output id="queueWidthValue"></output></label
+        ><input
+          id="queueWidth"
+          type="range"
+          min="50"
+          max="100"
+          step="1"
+        /><label class="range-label" for="padding"
+          >Breathing room <output id="paddingValue"></output></label
+        ><input id="padding" type="range" min="0" max="48" step="1" /><label
+          class="row compact"
+          ><span>Hide upgrade banners</span
+          ><input id="hidePromos" type="checkbox"
+        /></label>
+      </section>
+      <section class="tools">
+        <button id="export">Export settings</button
+        ><button id="import">Import settings</button
+        ><input
+          type="file"
+          id="file"
+          accept="application/json,.json"
+          hidden
+        /><button id="reset" class="quiet">Reset</button>
+      </section>
+    </main>
+    <footer>
+      <span id="status" role="status" aria-live="polite"
+        >Changes apply live</span
+      ><a href="https://music.youtube.com/" target="_blank" rel="noopener"
+        >Open Music ↗</a
+      >
+    </footer>
+    <script src="src/settings.js"></script>
+    <script src="src/popup.js"></script>
+  </body>
+</html>

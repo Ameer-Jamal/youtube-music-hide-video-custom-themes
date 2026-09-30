@@ -34,6 +34,9 @@ jobs:
       - name: Package extension
         run: npm run zip
 
+      - name: Installed extension smoke test
+        run: node scripts/extension-smoke.mjs
+
       # Upload the unpacked package, not dist/*.zip — artifact downloads are
       # always re-zipped, so uploading a .zip would nest chatgpt-material-dark-customizer-v*.zip
       # inside Extension-Package.zip.

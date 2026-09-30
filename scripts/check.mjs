@@ -1,12 +1,29 @@
-import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
-const manifest = JSON.parse(readFileSync('manifest.json'));
-const pkg = JSON.parse(readFileSync('package.json'));
+import assert from "node:assert/strict";
+import { readFileSync, existsSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+const manifest = JSON.parse(readFileSync("manifest.json"));
+const pkg = JSON.parse(readFileSync("package.json"));
 assert.equal(manifest.version, pkg.version);
 assert.equal(manifest.manifest_version, 3);
-assert.deepEqual(manifest.permissions, ['storage']);
-assert.deepEqual(manifest.content_scripts[0].matches, ['https://music.youtube.com/*']);
-for (const file of [...Object.values(manifest.icons), manifest.action.default_popup, ...manifest.content_scripts[0].js, 'src/popup.js']) assert.ok(existsSync(file), `Missing ${file}`);
-for (const file of ['src/settings.js', 'src/content.js', 'src/popup.js', 'scripts/package.mjs', 'scripts/chrome-web-store-release.mjs']) execFileSync(process.execPath, ['--check', file]);
-console.log('Manifest, permissions, package version, assets and JavaScript verified.');
+assert.deepEqual(manifest.permissions, ["storage"]);
+assert.deepEqual(manifest.content_scripts[0].matches, [
+  "https://music.youtube.com/*",
+]);
+for (const file of [
+  ...Object.values(manifest.icons),
+  manifest.action.default_popup,
+  ...manifest.content_scripts[0].js,
+  "src/popup.js",
+])
+  assert.ok(existsSync(file), `Missing ${file}`);
+for (const file of [
+  "src/settings.js",
+  "src/content.js",
+  "src/popup.js",
+  "scripts/package.mjs",
+  "scripts/chrome-web-store-release.mjs",
+])
+  execFileSync(process.execPath, ["--check", file]);
+console.log(
+  "Manifest, permissions, package version, assets and JavaScript verified.",
+);

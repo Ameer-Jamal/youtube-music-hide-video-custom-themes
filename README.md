@@ -31,7 +31,7 @@ No publishing credentials are included in this repository. Do not commit `.env` 
 
 ## Verification
 
-`npm run check` checks syntax, assets, permission scope, version consistency, input validation, palette generation, and reversible toggles. `npm run test:browser` runs popup and content-script integration checks in Chromium using synthetic YouTube Music markup; it is not a substitute for testing the current logged-in site.
+`npm run check` checks syntax, assets, permission scope, version consistency, input validation, palette generation, and reversible toggles. `npm run test:browser` runs popup and content-script integration checks in Chromium using synthetic YouTube Music markup; `npm run test:extension` installs the actual MV3 package in an isolated Chromium profile and checks real storage, manifest injection, cross-tab updates, and reload persistence. Neither substitutes for testing the current logged-in site.
 
 Before store submission, check a real Music account: open the player queue and lyrics, toggle video hiding on/off, play/pause/skip, change volume, resize the window, navigate between pages, try each palette, and turn the extension off. Site markup can change independently of releases.
 
