@@ -1,0 +1,108 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: extension-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment:
+      name: Publishing Env
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install browser for integration checks
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser integration checks
+        run: npm run test:browser
+
+      - name: Select release version
+        id: sync_version
+        env:
+          CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+          CWS_PUBLISHER_ID: ${{ secrets.CWS_PUBLISHER_ID }}
+          CWS_SERVICE_ACCOUNT_JSON: ${{ secrets.CWS_SERVICE_ACCOUNT_JSON }}
+        run: node scripts/chrome-web-store-release.mjs sync-version
+
+      - name: Release blocked summary
+        if: steps.sync_version.outputs.store_blocked == 'true'
+        run: |
+          echo "::notice title=Release skipped::${{ steps.sync_version.outputs.store_block_reason }}"
+
+      - name: Verify project
+        if: steps.sync_version.outputs.store_blocked != 'true'
+        run: npm run check
+
+      - name: Configure Git
+        if: steps.sync_version.outputs.changed == 'true' && steps.sync_version.outputs.store_blocked != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit release version
+        if: steps.sync_version.outputs.changed == 'true' && steps.sync_version.outputs.store_blocked != 'true'
+        run: |
+          git add manifest.json package.json package-lock.json
+          git commit -m "chore: release v${{ steps.sync_version.outputs.version }}"
+          git push origin HEAD:main
+
+      - name: Package extension
+        if: steps.sync_version.outputs.store_blocked != 'true'
+        run: npm run zip
+
+      - name: Upload workflow artifact
+        if: steps.sync_version.outputs.store_blocked != 'true'
+        uses: actions/upload-artifact@v6
+        with:
+          name: chrome-web-store-release-v${{ steps.sync_version.outputs.version }}
+          path: dist/youtube-music-hide-video-custom-themes-v${{ steps.sync_version.outputs.version }}.zip
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Create GitHub Release
+        if: steps.sync_version.outputs.store_blocked != 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.sync_version.outputs.version }}
+          target_commitish: main
+          name: v${{ steps.sync_version.outputs.version }}
+          generate_release_notes: true
+          files: dist/youtube-music-hide-video-custom-themes-v${{ steps.sync_version.outputs.version }}.zip
+
+      - name: Upload package to Chrome Web Store
+        if: steps.sync_version.outputs.store_blocked != 'true'
+        id: cws_upload
+        env:
+          CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+          CWS_PUBLISHER_ID: ${{ secrets.CWS_PUBLISHER_ID }}
+          CWS_SERVICE_ACCOUNT_JSON: ${{ secrets.CWS_SERVICE_ACCOUNT_JSON }}
+        run: node scripts/chrome-web-store-release.mjs upload dist/youtube-music-hide-video-custom-themes-v${{ steps.sync_version.outputs.version }}.zip
+
+      - name: Submit for review and publish after approval
+        if: steps.cws_upload.outputs.uploaded == 'true'
+        env:
+          CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+          CWS_PUBLISHER_ID: ${{ secrets.CWS_PUBLISHER_ID }}
+          CWS_SERVICE_ACCOUNT_JSON: ${{ secrets.CWS_SERVICE_ACCOUNT_JSON }}
+        run: node scripts/chrome-web-store-release.mjs publish default
