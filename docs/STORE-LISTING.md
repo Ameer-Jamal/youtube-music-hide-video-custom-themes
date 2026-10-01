@@ -9,7 +9,9 @@ Summary: Hide the video, give your queue room to breathe, and make YouTube Music
 Your music deserves its own space. Turn YouTube Music into a focused listening experience with a full-width queue and a palette that fits your mood.
 
 - Hide the video panel while music keeps playing.
-- Choose eight palettes: YouTube original, Material dark, Galaxy purple, Midnight blue, Crimson night, Emerald shadow, Pure black, or your own colors.
+- Choose 26 light and dark themes, YouTube original, or your own colors.
+- Match buttons and playback controls to your theme with readable text.
+- Enable an optional wide home layout to use more screen space.
 - Customize canvas, player, and accent colors with a live preview.
 - Keep volume visible and show its percentage.
 - Adjust queue width, spacing, and volume slider width.

@@ -43,6 +43,25 @@ try {
     };
   });
   await page.goto("https://extension.test/popup.html");
+  assert.equal(
+    await page.locator(".brand strong").textContent(),
+    "YouTube Music Customizer",
+  );
+  assert.equal(
+    await page.locator(".brand span").textContent(),
+    "By Ameer Jamal",
+  );
+  await page.locator('[data-filter="light"]').click();
+  assert.equal(await page.locator(".theme:visible").count(), 10);
+  await page.locator('[data-theme="Paper"]').click();
+  await page.waitForFunction(() => window.savedSettings?.theme === "Paper");
+  assert.equal(
+    await page.locator("#preview").evaluate((e) => getComputedStyle(e).color),
+    "rgb(17, 17, 17)",
+  );
+  await page.locator("#wideHome").check();
+  await page.waitForFunction(() => window.savedSettings?.wideHome === true);
+  await page.locator('[data-filter="all"]').click();
   await page.locator('[data-theme="GalaxyPurple"]').click();
   await page.waitForFunction(
     () => window.savedSettings?.theme === "GalaxyPurple",

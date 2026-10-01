@@ -58,3 +58,24 @@ test("custom palette and bounded layout values reach generated CSS", () => {
   for (const value of ["#123456", "#654321", "#abcdef", "73%", "140px", "25px"])
     assert.ok(css.includes(value));
 });
+
+test("theme text meets WCAG AA contrast on canvas, player and accent", () => {
+  const { colors, luminance } = globalThis.YTM;
+  const contrast = (a, b) =>
+    (Math.max(luminance(a), luminance(b)) + 0.05) /
+    (Math.min(luminance(a), luminance(b)) + 0.05);
+  for (const [name, palette] of Object.entries(presets)) {
+    const tone = colors(palette);
+    for (const [surface, text] of [
+      [palette.background, tone.text],
+      [palette.background, tone.secondary],
+      [palette.player, tone.playerText],
+      [palette.accent, tone.onAccent],
+    ]) {
+      assert.ok(
+        contrast(surface, text) >= 4.5,
+        `${name}: ${surface}/${text} must be readable`,
+      );
+    }
+  }
+});

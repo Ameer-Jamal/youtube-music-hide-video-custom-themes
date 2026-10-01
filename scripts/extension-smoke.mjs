@@ -114,6 +114,30 @@ try {
   await music.waitForFunction(() =>
     document.documentElement.hasAttribute("data-ytm-home"),
   );
+  await popup.locator('[data-theme="Paper"]').click();
+  await music.waitForFunction(
+    () =>
+      getComputedStyle(document.querySelector("ytmusic-player-bar"))
+        .backgroundColor === "rgb(238, 234, 226)",
+  );
+  assert.equal(
+    await music
+      .locator("ytmusic-player-bar")
+      .evaluate((e) => getComputedStyle(e).color),
+    "rgb(17, 17, 17)",
+  );
+  await popup.locator("#wideHome").check();
+  await music.waitForFunction(() =>
+    document.documentElement.hasAttribute("data-ytm-wide-home"),
+  );
+  await music.reload();
+  await music.waitForFunction(() =>
+    document.documentElement.hasAttribute("data-ytm-wide-home"),
+  );
+  await popup.locator("#wideHome").uncheck();
+  await music.waitForFunction(
+    () => !document.documentElement.hasAttribute("data-ytm-wide-home"),
+  );
   await popup.locator("#enabled").uncheck();
   await music.waitForFunction(
     () =>

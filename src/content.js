@@ -11,6 +11,10 @@
     if (!document.documentElement) return;
     const home = location.pathname === "/" || location.pathname === "/home";
     document.documentElement.toggleAttribute(
+      "data-ytm-wide-home",
+      home && current.enabled && current.wideHome,
+    );
+    document.documentElement.toggleAttribute(
       "data-ytm-home",
       home && current.enabled && current.theme !== "YoutubeMusicDefault",
     );

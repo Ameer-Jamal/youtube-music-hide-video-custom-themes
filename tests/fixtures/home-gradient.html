@@ -59,6 +59,8 @@
         display: block;
       }
       .ytmusic-shelf {
+        max-width: 900px;
+        margin-inline: auto;
         height: 400px;
         padding: 48px 80px;
         box-sizing: border-box;
@@ -103,6 +105,17 @@
                   class="ytmusic-shelf style-scope ytmusic-carousel-shelf-renderer"
                 >
                   <h2>First shelf</h2>
+                  <ytmusic-queue-header-renderer
+                    ><div id="buttons">
+                      <ytmusic-chip-cloud-chip-renderer
+                        ><div class="gradient-box">
+                          <a role="tab" aria-selected="false" title="Save"
+                            ><yt-formatted-string>Save</yt-formatted-string></a
+                          >
+                        </div></ytmusic-chip-cloud-chip-renderer
+                      >
+                    </div></ytmusic-queue-header-renderer
+                  >
                   <div class="tiles">
                     <div class="tile"></div>
                     <div class="tile"></div>
@@ -129,6 +142,13 @@
           >
         </div>
       </div></ytmusic-browse-response
+    >
+    <ytmusic-player-bar
+      ><div class="left-controls">
+        <button class="play-pause-button" aria-label="Pause">
+          <yt-icon>Ⅱ</yt-icon>
+        </button>
+      </div></ytmusic-player-bar
     >
   </body>
 </html>

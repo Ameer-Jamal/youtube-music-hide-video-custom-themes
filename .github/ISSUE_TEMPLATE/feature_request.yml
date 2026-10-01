@@ -1,0 +1,11 @@
+name: Request a feature
+description: Suggest a way to improve your listening experience.
+title: "[Feature]: "
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like?
+      description: Describe the feature and how it would help you.
+    validations:
+      required: true

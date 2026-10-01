@@ -1,7 +1,7 @@
 (async () => {
   const $ = (id) => document.getElementById(id);
   const version = chrome.runtime?.getManifest?.()?.version;
-  if (version) $("version").textContent = ` · v${version}`;
+  if (version) $("version").textContent = `v${version}`;
   let settings = { ...YTM.defaults };
   let saveTimer;
   let writeQueue = Promise.resolve();
@@ -19,11 +19,24 @@
     return writeQueue;
   }
   const themes = $("themes");
+  $("palette-count").textContent =
+    `${Object.keys(YTM.presets).length - 2} themes + original & custom`;
+  for (const filter of document.querySelectorAll("[data-filter]")) {
+    filter.addEventListener("click", () => {
+      for (const other of document.querySelectorAll("[data-filter]"))
+        other.setAttribute("aria-pressed", String(other === filter));
+      for (const button of themes.children)
+        button.hidden =
+          filter.dataset.filter !== "all" &&
+          button.dataset.kind !== filter.dataset.filter;
+    });
+  }
   for (const [key, preset] of Object.entries(YTM.presets)) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "theme";
     button.dataset.theme = key;
+    button.dataset.kind = YTM.colors(preset).light ? "light" : "dark";
     button.style.setProperty("--swatch-bg", preset.background);
     button.style.setProperty("--swatch-player", preset.player);
     const swatch = document.createElement("span");
@@ -59,6 +72,13 @@
       );
     const palette =
       settings.theme === "UserDefined" ? settings : YTM.presets[settings.theme];
+    const tone = YTM.colors(palette);
+    $("preview").style.setProperty("--text", tone.text);
+    $("preview").style.setProperty("--secondary", tone.secondary);
+    $("preview").style.setProperty("--player-text", tone.playerText);
+    $("preview").style.setProperty("--on-accent", tone.onAccent);
+    document.documentElement.style.setProperty("--ui-accent", palette.accent);
+    document.documentElement.style.setProperty("--ui-on-accent", tone.onAccent);
     for (const [variable, field] of [
       ["canvas", "background"],
       ["player", "player"],

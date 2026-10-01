@@ -66,6 +66,9 @@ try {
     { theme: "MidnightBlue" },
     { theme: "EmeraldShadow" },
     { theme: "MaterialDark" },
+    { theme: "Paper" },
+    { theme: "Mint" },
+    { theme: "Lavender" },
   ]) {
     await page.evaluate(
       (s) => window.settingsListener({ settings: { newValue: s } }, "sync"),
@@ -76,6 +79,77 @@ try {
       `No shelf-boundary seam for ${settings.theme}`,
     );
   }
+  // Validate rendered controls rather than only the generated CSS strings.
+  await page.evaluate(() =>
+    window.settingsListener(
+      { settings: { newValue: { theme: "Mint" } } },
+      "sync",
+    ),
+  );
+  assert.equal(
+    await page
+      .locator(".play-pause-button")
+      .evaluate((e) => getComputedStyle(e).backgroundColor),
+    "rgb(39, 115, 79)",
+  );
+  assert.equal(
+    await page
+      .locator(".play-pause-button yt-icon")
+      .evaluate((e) => getComputedStyle(e).color),
+    "rgb(255, 255, 255)",
+  );
+  assert.equal(
+    await page
+      .locator('a[title="Save"] yt-formatted-string')
+      .evaluate((e) => getComputedStyle(e).color),
+    "rgb(17, 17, 17)",
+  );
+  await page.setViewportSize({ width: 1600, height: 800 });
+  const standardWidth = await page
+    .locator(".ytmusic-shelf")
+    .first()
+    .evaluate((e) => e.getBoundingClientRect().width);
+  await page.evaluate(() =>
+    window.settingsListener(
+      { settings: { newValue: { theme: "Mint", wideHome: true } } },
+      "sync",
+    ),
+  );
+  await page.waitForFunction(() =>
+    document.documentElement.hasAttribute("data-ytm-wide-home"),
+  );
+  assert.ok(
+    (await page
+      .locator(".ytmusic-shelf")
+      .first()
+      .evaluate((e) => e.getBoundingClientRect().width)) >
+      standardWidth + 400,
+  );
+  await page.evaluate(() => {
+    history.pushState({}, "", "/browse/album");
+    document.dispatchEvent(new Event("yt-navigate-finish"));
+  });
+  assert.equal(
+    await page.locator("html").getAttribute("data-ytm-wide-home"),
+    null,
+  );
+  await page.evaluate(() => {
+    history.pushState({}, "", "/");
+    document.dispatchEvent(new Event("yt-navigate-finish"));
+    window.settingsListener(
+      { settings: { newValue: { theme: "Mint", wideHome: false } } },
+      "sync",
+    );
+  });
+  assert.equal(
+    await page
+      .locator(".ytmusic-shelf")
+      .first()
+      .evaluate((e) => e.getBoundingClientRect().width),
+    standardWidth,
+  );
+  await page.screenshot({ path: "dist/verification/home-light.png" });
+  await page.setViewportSize({ width: 1000, height: 800 });
   await page.evaluate(() =>
     window.settingsListener(
       {
@@ -102,7 +176,7 @@ try {
     "Power off restores native background",
   );
   console.log(
-    "Pixel regression passed: reproduced native 50vh seam, verified continuous feed in four themes, and checked restoration.",
+    "Pixel regression passed: reproduced native 50vh seam, verified continuous feed in light and dark themes, and checked restoration.",
   );
 } finally {
   await browser.close();

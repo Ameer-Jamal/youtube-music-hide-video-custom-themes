@@ -1,0 +1,26 @@
+name: Report a bug
+description: Tell us what went wrong with the extension.
+title: "[Bug]: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include steps to reproduce and what you expected.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Extension version and browser
+      placeholder: e.g. v1.1.0, Edge on macOS
+  - type: input
+    id: theme
+    attributes:
+      label: Theme and affected page
+      placeholder: e.g. Mint cream, home page
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshots or details
+      description: Remove personal information before attaching screenshots.
