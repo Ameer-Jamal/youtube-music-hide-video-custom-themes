@@ -1,6 +1,6 @@
 # YouTube Music - Hide Video & Custom Themes
 
-![Music. Your way. — by Ameer Jamal](docs/promotional/banner.png)
+![Less video. More music. — YouTube Music Hide Video & Custom Themes by Ameer Jamal](docs/promotional/youtube-music-extension-hero.png)
 
 [Download the latest release](https://github.com/Ameer-Jamal/youtube-music-hide-video-custom-themes/releases/latest) · [Report an issue](https://github.com/Ameer-Jamal/youtube-music-hide-video-custom-themes/issues)
 
