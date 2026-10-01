@@ -39,6 +39,11 @@
     themes.append(button);
   }
   function render() {
+    if (settings.theme !== "UserDefined") {
+      const preset = YTM.presets[settings.theme];
+      for (const key of ["background", "player", "accent"])
+        settings[key] = preset[key];
+    }
     for (const key of Object.keys(YTM.defaults)) {
       const input = $(key);
       if (!input) continue;

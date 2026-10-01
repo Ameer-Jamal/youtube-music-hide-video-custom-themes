@@ -91,8 +91,14 @@
     let css = "";
     if (s.theme !== "YoutubeMusicDefault")
       css += `
-   html { --ytmusic-general-background-a: ${palette.background} !important; --ytmusic-general-background-c: ${palette.background} !important; --ytmusic-brand-background-solid: ${palette.player} !important; --yt-spec-base-background: ${palette.background} !important; --yt-spec-brand-background-solid: ${palette.background} !important; --ytmusic-color-white1: #f5f5f5; }
-   body, ytmusic-app, ytmusic-app-layout > #content, ytmusic-nav-bar, ytmusic-tabs.stuck, ytmusic-player-page #side-panel, ytmusic-player-page #tabsContent, #sections.ytmusic-guide-renderer { background-color: ${palette.background} !important; }
+   html { --ytmusic-general-background-a: ${palette.background} !important; --ytmusic-general-background-b: ${palette.background} !important; --ytmusic-general-background-c: ${palette.background} !important; --ytmusic-general-background-d: ${palette.background} !important; --ytmusic-brand-background-solid: ${palette.player} !important; --yt-spec-base-background: ${palette.background} !important; --yt-spec-brand-background-solid: ${palette.background} !important; --ytmusic-color-white1: #f5f5f5; }
+   html, body, ytmusic-app, ytmusic-app-layout > #content, ytmusic-nav-bar, ytmusic-tabs.stuck, ytmusic-player-page #side-panel, ytmusic-player-page #tabsContent, #sections.ytmusic-guide-renderer { background-color: ${palette.background} !important; }
+   /* Keep one canvas under the native header and browse shelves. YouTube's
+      artwork-derived background layer otherwise ends at the first shelf. */
+   ytmusic-app-layout, ytmusic-browse-response, ytmusic-player-page, ytmusic-search-page, ytmusic-guide-renderer { background: ${palette.background} !important; }
+   ytmusic-app > #background, #background.ytmusic-app, ytmusic-app-layout #background, ytmusic-browse-response > #background, ytmusic-browse-response #background-gradient, ytmusic-browse-response .background-gradient, ytmusic-player-page #background { background: none !important; }
+   ytmusic-browse-response #header, ytmusic-browse-response #contents, ytmusic-browse-response ytmusic-carousel-shelf-renderer, ytmusic-player-page #tab-renderer, ytmusic-player-page #tabsContent, ytmusic-player-page #side-panel { background: transparent !important; }
+   ytmusic-nav-bar, ytmusic-tabs.stuck, ytmusic-guide-renderer #sections { background: ${palette.background} !important; }
    ytmusic-player-bar { background-color: ${palette.player} !important; }
    ytmusic-player-bar #progress-bar, ytmusic-player-bar .volume-slider { --paper-slider-active-color: ${palette.accent} !important; --paper-slider-knob-color: ${palette.accent} !important; }
    ::-webkit-scrollbar { width: 8px; height: 8px; } ::-webkit-scrollbar-thumb { background: ${palette.accent}66; border-radius: 12px; } ::-webkit-scrollbar-track { background: transparent; }
@@ -113,7 +119,7 @@
       css += `ytmusic-player-bar .volume-slider { opacity: 1 !important; pointer-events: auto !important; }`;
     css += `ytmusic-player-bar .volume-slider, ytmusic-player-bar .expand-volume-slider { width: ${s.volumeWidth}px !important; } ytmusic-player-bar #right-controls { width: auto !important; }`;
     if (s.showVolumePercentage)
-      css += `ytmusic-player-bar .volume-slider[aria-valuenow]::before { content: attr(aria-valuenow) '%'; position: absolute; left: -42px; color: #bababa; font-size: 12px; } ytmusic-player-bar .volume-slider { margin-left: 44px !important; }`;
+      css += `ytmusic-player-bar .ytm-volume-percentage { display: inline-flex; align-items: center; justify-content: flex-end; flex: 0 0 4ch; min-width: 4ch; margin-inline: 8px; color: var(--ytmusic-text-secondary, #bababa); font: 500 11px/1.2 system-ui, sans-serif; font-variant-numeric: tabular-nums; white-space: nowrap; pointer-events: none; }`;
     if (s.hidePromos)
       css += `ytmusic-mealbar-promo-renderer { display: none !important; }`;
     return css;

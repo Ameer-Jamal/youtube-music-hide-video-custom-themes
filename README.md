@@ -1,8 +1,12 @@
 # YouTube Music - Hide Video & Custom Themes
 
+![Music. Your way. — by Ameer Jamal](docs/promotional/banner.png)
+
+[Download the latest release](https://github.com/Ameer-Jamal/youtube-music-hide-video-custom-themes/releases/latest) · [Report an issue](https://github.com/Ameer-Jamal/youtube-music-hide-video-custom-themes/issues)
+
 A focused YouTube Music experience, built from Ameer Jamal’s YouTube Music Transformer userstyle. Manifest V3, no background worker, no remote code, and only the storage permission.
 
-Eight palettes, custom canvas/player/accent colors, live updates across Music tabs, a full-width queue when video is hidden, always-visible volume, volume percentage, adjustable spacing, optional promo hiding, and validated JSON backups.
+Eight palettes, custom canvas/player/accent colors, live updates across Music tabs, a full-width queue when video is hidden, always-visible volume, a live, mute-aware volume percentage, adjustable spacing, optional promo hiding, and validated JSON backups.
 
 **Hide video is visual only:** playback continues and streaming data use is unchanged. It does not bypass YouTube Premium or force Song mode.
 
@@ -22,7 +26,7 @@ CI checks every push and pull request and produces an unpacked **Extension-Packa
 
 For the first release:
 
-1. Run `npm run build` and upload `dist/youtube-music-hide-video-custom-themes-v1.0.0.zip` to a **new** Chrome Web Store item. Complete the listing using [store copy](docs/STORE-LISTING.md), authentic screenshots, and the [privacy policy](docs/PRIVACY.md).
+1. Run `npm run build` and upload `dist/youtube-music-hide-video-custom-themes-v1.0.1.zip` to a **new** Chrome Web Store item. Complete the listing using [store copy](docs/STORE-LISTING.md), authentic screenshots, and the [privacy policy](docs/PRIVACY.md).
 2. Enable Chrome Web Store API access and authorize the same service-account setup used by your Material Dark extension for this publisher.
 3. Create the GitHub environment **Publishing Env**. Add `CWS_EXTENSION_ID` with the **new item’s ID**, `CWS_PUBLISHER_ID`, and `CWS_SERVICE_ACCOUNT_JSON` (raw JSON or base64). Never use your ChatGPT extension’s item ID here.
 4. Run **Actions → Release → Run workflow** after the item is ready for API updates. Store approval is controlled by Google.
@@ -35,9 +39,13 @@ No publishing credentials are included in this repository. Do not commit `.env` 
 
 Before store submission, check a real Music account: open the player queue and lyrics, toggle video hiding on/off, play/pause/skip, change volume, resize the window, navigate between pages, try each palette, and turn the extension off. Site markup can change independently of releases.
 
-## Popup preview
+## Your palette, your player
 
-![Extension popup](docs/screenshots/popup.png)
+![Six dark theme palette previews](docs/promotional/palettes.png)
+
+Palette previews use illustrative sample tracks. The controls below are captured from the actual extension popup.
+
+<img src="docs/screenshots/popup.png" alt="Extension popup with theme controls and a discreet Ameer Jamal credit" width="390">
 
 ## Source and license
 

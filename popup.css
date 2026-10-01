@@ -360,3 +360,13 @@ input:disabled {
     transition: none !important;
   }
 }
+
+.signature {
+  padding: 0 22px 14px;
+  color: #81798e;
+  font-size: 9px;
+  letter-spacing: 0.15px;
+}
+.signature a {
+  color: #aaa0b7;
+}

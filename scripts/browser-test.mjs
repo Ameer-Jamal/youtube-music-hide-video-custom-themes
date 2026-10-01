@@ -125,6 +125,52 @@ try {
       .evaluate((el) => getComputedStyle(el).backgroundColor),
     "rgb(22, 41, 69)",
   );
+  await host.waitForFunction(
+    () =>
+      document.querySelector(".ytm-volume-percentage")?.textContent === "80%",
+  );
+  await host
+    .locator(".volume-slider")
+    .evaluate((el) => el.setAttribute("aria-valuenow", "7"));
+  await host.waitForFunction(
+    () =>
+      document.querySelector(".ytm-volume-percentage")?.textContent === "7%",
+  );
+  await host
+    .locator("ytmusic-player-bar")
+    .evaluate((el) => el.setAttribute("muted", ""));
+  await host.waitForFunction(
+    () =>
+      document.querySelector(".ytm-volume-percentage")?.textContent === "0%",
+  );
+  await host.locator("ytmusic-player-bar").evaluate((el) => {
+    el.removeAttribute("muted");
+    el.innerHTML =
+      '<div class="volume-slider"><div role="slider" aria-valuenow="42"></div></div>';
+  });
+  await host.waitForFunction(
+    () =>
+      document.querySelector(".ytm-volume-percentage")?.textContent === "42%",
+  );
+  assert.equal(await host.locator(".ytm-volume-percentage").count(), 1);
+  await host.evaluate(() => {
+    const browse = document.createElement("ytmusic-browse-response");
+    browse.innerHTML =
+      '<div id="background-gradient" style="background:linear-gradient(red,blue)"></div><div id="contents"><ytmusic-carousel-shelf-renderer style="background:black">Shelf</ytmusic-carousel-shelf-renderer></div>';
+    document.body.append(browse);
+  });
+  assert.equal(
+    await host
+      .locator("#background-gradient")
+      .evaluate((el) => getComputedStyle(el).backgroundImage),
+    "none",
+  );
+  assert.equal(
+    await host
+      .locator("ytmusic-carousel-shelf-renderer")
+      .evaluate((el) => getComputedStyle(el).backgroundColor),
+    "rgba(0, 0, 0, 0)",
+  );
   await host.evaluate(() =>
     window.settingsListener(
       { settings: { newValue: { enabled: false } } },
@@ -138,6 +184,7 @@ try {
     "none",
   );
   assert.equal(await host.locator("#ytm-custom-themes").textContent(), "");
+  assert.equal(await host.locator(".ytm-volume-percentage").count(), 0);
   await host.evaluate(() =>
     window.settingsListener(
       { settings: { newValue: { hideVideo: true } } },

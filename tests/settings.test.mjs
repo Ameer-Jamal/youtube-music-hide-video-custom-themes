@@ -37,7 +37,9 @@ test("power off fully removes styling and feature switches are reversible", () =
   );
   assert.ok(!buildCss({ hideVideo: false }).includes("#main-panel"));
   assert.ok(
-    !buildCss({ showVolumePercentage: false }).includes("aria-valuenow"),
+    !buildCss({ showVolumePercentage: false }).includes(
+      "ytm-volume-percentage",
+    ),
   );
   assert.ok(!buildCss({ hidePromos: false }).includes("mealbar"));
   assert.ok(buildCss({ hidePromos: true }).includes("mealbar"));
