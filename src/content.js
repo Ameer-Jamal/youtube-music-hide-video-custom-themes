@@ -1,6 +1,8 @@
 (() => {
   const style = document.createElement("style");
   style.id = "ytm-custom-themes";
+  style.dataset.version =
+    chrome.runtime?.getManifest?.()?.version || "development";
   let current = YTM.defaults;
   const readout = document.createElement("span");
   readout.className = "ytm-volume-percentage";

@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      /* Structural selectors verified in the live signed-in page. The native
+   gradient rule was read from YouTube Music's loaded stylesheet. */
+      html {
+        --ytmusic-background: #560b0b;
+        --ytmusic-nav-bar-height: 0px;
+        --ytmusic-base-page-padding-bottom: 0px;
+      }
+      body {
+        margin: 0;
+        background: #560b0b;
+        color: white;
+        font-family: system-ui;
+      }
+      ytmusic {
+        display: block;
+      }
+      ytmusic-browse-response {
+        display: block;
+      }
+      #browse-page {
+        display: block;
+        position: relative;
+      }
+      .immersive-background {
+        position: absolute;
+        inset: 0;
+        height: 50vh;
+        background: linear-gradient(135deg, #29222d, #70401e);
+      }
+      ytmusic-browse-response[has-background]:not([disable-gradient])
+        .background-gradient.ytmusic-browse-response {
+        background-image: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.6),
+          var(--ytmusic-background)
+        );
+        background-size: 100vw 50vh;
+        padding-top: var(--ytmusic-nav-bar-height);
+        padding-bottom: var(--ytmusic-base-page-padding-bottom);
+        position: absolute;
+        width: 100%;
+      }
+      #content-wrapper {
+        position: relative;
+      }
+      ytmusic-section-list-renderer {
+        display: block;
+      }
+      #contents {
+        display: flex;
+        flex-direction: column;
+      }
+      ytmusic-carousel-shelf-renderer {
+        display: block;
+      }
+      .ytmusic-shelf {
+        height: 400px;
+        padding: 48px 80px;
+        box-sizing: border-box;
+      }
+      h2 {
+        font-size: 28px;
+        margin: 0 0 22px;
+      }
+      .tiles {
+        display: flex;
+        gap: 20px;
+      }
+      .tile {
+        width: 180px;
+        height: 180px;
+        border-radius: 8px;
+        background: linear-gradient(140deg, #a088bf, #463352);
+      }
+    </style>
+  </head>
+  <body>
+    <ytmusic-browse-response
+      id="browse-page"
+      class="style-scope ytmusic-app"
+      immersive-mode
+      has-background
+      ><div
+        id="background"
+        class="immersive-background style-scope ytmusic-browse-response"
+      ></div>
+      <div class="background-gradient style-scope ytmusic-browse-response">
+        <div id="content-wrapper" class="style-scope ytmusic-browse-response">
+          <ytmusic-section-list-renderer
+            class="style-scope ytmusic-browse-response"
+            ><div
+              id="contents"
+              class="style-scope ytmusic-section-list-renderer"
+            >
+              <ytmusic-carousel-shelf-renderer
+                class="style-scope ytmusic-section-list-renderer fullbleed"
+                ><div
+                  class="ytmusic-shelf style-scope ytmusic-carousel-shelf-renderer"
+                >
+                  <h2>First shelf</h2>
+                  <div class="tiles">
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                  </div></div></ytmusic-carousel-shelf-renderer
+              ><ytmusic-carousel-shelf-renderer
+                class="style-scope ytmusic-section-list-renderer fullbleed"
+                ><div
+                  class="ytmusic-shelf style-scope ytmusic-carousel-shelf-renderer"
+                >
+                  <h2>Second shelf</h2>
+                  <div class="tiles">
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                  </div></div></ytmusic-carousel-shelf-renderer
+              ><ytmusic-carousel-shelf-renderer
+                class="style-scope ytmusic-section-list-renderer fullbleed"
+                ><div
+                  class="ytmusic-shelf style-scope ytmusic-carousel-shelf-renderer"
+                >
+                  <h2>Third shelf</h2>
+                </div></ytmusic-carousel-shelf-renderer
+              >
+            </div></ytmusic-section-list-renderer
+          >
+        </div>
+      </div></ytmusic-browse-response
+    >
+  </body>
+</html>

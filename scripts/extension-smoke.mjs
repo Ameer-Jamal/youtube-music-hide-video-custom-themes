@@ -23,7 +23,15 @@ try {
   const id = await item.getAttribute("id");
   assert.ok(id);
   const popup = await context.newPage();
+  await popup.setViewportSize({ width: 390, height: 1100 });
   await popup.goto(`chrome-extension://${id}/popup.html`);
+  await popup.waitForFunction(() =>
+    document.querySelector("#version").textContent.includes("v"),
+  );
+  await popup.screenshot({
+    path: "docs/screenshots/popup.png",
+    fullPage: true,
+  });
   await popup.locator('[data-theme="MidnightBlue"]').click();
   await popup.waitForFunction(
     async () =>
@@ -34,7 +42,7 @@ try {
   await music.route("https://music.youtube.com/**", (route) =>
     route.fulfill({
       contentType: "text/html",
-      body: '<html><body><div id="browse-page"><div id="background" style="background:linear-gradient(red,black);height:540px"><ytmusic-fullbleed-thumbnail-renderer>Decorative artwork</ytmusic-fullbleed-thumbnail-renderer></div><ytmusic-browse-response><div id="contents"><ytmusic-carousel-shelf-renderer style="background:black">First shelf</ytmusic-carousel-shelf-renderer><ytmusic-carousel-shelf-renderer style="background:darkred">Second shelf</ytmusic-carousel-shelf-renderer><ytmusic-fullbleed-thumbnail-renderer id="album-art">Album hero</ytmusic-fullbleed-thumbnail-renderer></div></ytmusic-browse-response></div><ytmusic-player-page><div class="content"><div id="main-panel">VIDEO</div><div id="side-panel">QUEUE</div></div></ytmusic-player-page><ytmusic-player-bar>PLAYER</ytmusic-player-bar></body></html>',
+      body: '<html><body><ytmusic-browse-response id="browse-page" has-background><div id="background" style="background:linear-gradient(red,black);height:540px"><ytmusic-fullbleed-thumbnail-renderer>Decorative artwork</ytmusic-fullbleed-thumbnail-renderer></div><div class="background-gradient"><div id="content-wrapper"><ytmusic-section-list-renderer><div id="contents"><ytmusic-carousel-shelf-renderer style="background:black">First shelf</ytmusic-carousel-shelf-renderer><ytmusic-carousel-shelf-renderer style="background:darkred">Second shelf</ytmusic-carousel-shelf-renderer><ytmusic-fullbleed-thumbnail-renderer id="album-art">Album hero</ytmusic-fullbleed-thumbnail-renderer></div></ytmusic-section-list-renderer></div></div></ytmusic-browse-response><ytmusic-player-page><div class="content"><div id="main-panel">VIDEO</div><div id="side-panel">QUEUE</div></div></ytmusic-player-page><ytmusic-player-bar>PLAYER</ytmusic-player-bar></body></html>',
     }),
   );
   await music.goto("https://music.youtube.com/");

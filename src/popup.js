@@ -1,5 +1,7 @@
 (async () => {
   const $ = (id) => document.getElementById(id);
+  const version = chrome.runtime?.getManifest?.()?.version;
+  if (version) $("version").textContent = ` · v${version}`;
   let settings = { ...YTM.defaults };
   let saveTimer;
   let writeQueue = Promise.resolve();

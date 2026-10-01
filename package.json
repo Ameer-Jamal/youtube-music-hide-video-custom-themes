@@ -1,6 +1,6 @@
 {
   "name": "youtube-music-hide-video-custom-themes",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,11 +13,13 @@
     "test:browser": "node scripts/browser-test.mjs",
     "test:extension": "npm run build && node scripts/extension-smoke.mjs",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test:home": "node scripts/home-gradient-test.mjs"
   },
   "devDependencies": {
     "fflate": "^0.8.2",
     "playwright": "^1.55.0",
+    "pngjs": "^7.0.0",
     "prettier": "^3.9.9"
   }
 }
