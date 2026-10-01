@@ -34,7 +34,7 @@ try {
   await music.route("https://music.youtube.com/**", (route) =>
     route.fulfill({
       contentType: "text/html",
-      body: '<html><body><ytmusic-player-page><div class="content"><div id="main-panel">VIDEO</div><div id="side-panel">QUEUE</div></div></ytmusic-player-page><ytmusic-player-bar>PLAYER</ytmusic-player-bar></body></html>',
+      body: '<html><body><div id="browse-page"><div id="background" style="background:linear-gradient(red,black);height:540px"><ytmusic-fullbleed-thumbnail-renderer>Decorative artwork</ytmusic-fullbleed-thumbnail-renderer></div><ytmusic-browse-response><div id="contents"><ytmusic-carousel-shelf-renderer style="background:black">First shelf</ytmusic-carousel-shelf-renderer><ytmusic-carousel-shelf-renderer style="background:darkred">Second shelf</ytmusic-carousel-shelf-renderer><ytmusic-fullbleed-thumbnail-renderer id="album-art">Album hero</ytmusic-fullbleed-thumbnail-renderer></div></ytmusic-browse-response></div><ytmusic-player-page><div class="content"><div id="main-panel">VIDEO</div><div id="side-panel">QUEUE</div></div></ytmusic-player-page><ytmusic-player-bar>PLAYER</ytmusic-player-bar></body></html>',
     }),
   );
   await music.goto("https://music.youtube.com/");
@@ -48,6 +48,63 @@ try {
       .locator("ytmusic-player-bar")
       .evaluate((el) => getComputedStyle(el).backgroundColor),
     "rgb(22, 41, 69)",
+  );
+  await music.waitForFunction(() =>
+    document.documentElement.hasAttribute("data-ytm-home"),
+  );
+  assert.equal(
+    await music
+      .locator("#browse-page > #background")
+      .evaluate((el) => getComputedStyle(el).display),
+    "none",
+  );
+  assert.notEqual(
+    await music
+      .locator("#album-art")
+      .evaluate((el) => getComputedStyle(el).display),
+    "none",
+  );
+  assert.ok(
+    (
+      await music
+        .locator("ytmusic-browse-response")
+        .evaluate((el) => getComputedStyle(el).backgroundImage)
+    ).includes("linear-gradient"),
+  );
+  for (const shelf of await music
+    .locator("ytmusic-carousel-shelf-renderer")
+    .all())
+    assert.equal(
+      await shelf.evaluate((el) => getComputedStyle(el).backgroundColor),
+      "rgba(0, 0, 0, 0)",
+    );
+  await music.evaluate(() => {
+    history.pushState({}, "", "/browse/album");
+    document.dispatchEvent(new Event("yt-navigate-finish"));
+  });
+  await music.waitForFunction(
+    () => !document.documentElement.hasAttribute("data-ytm-home"),
+  );
+  assert.notEqual(
+    await music
+      .locator("#browse-page > #background")
+      .evaluate((el) => getComputedStyle(el).display),
+    "none",
+  );
+  await music.evaluate(() => {
+    history.pushState({}, "", "/");
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  });
+  await music.waitForFunction(() =>
+    document.documentElement.hasAttribute("data-ytm-home"),
+  );
+  await popup.locator('[data-theme="YoutubeMusicDefault"]').click();
+  await music.waitForFunction(
+    () => !document.documentElement.hasAttribute("data-ytm-home"),
+  );
+  await popup.locator('[data-theme="MidnightBlue"]').click();
+  await music.waitForFunction(() =>
+    document.documentElement.hasAttribute("data-ytm-home"),
   );
   await popup.locator("#enabled").uncheck();
   await music.waitForFunction(

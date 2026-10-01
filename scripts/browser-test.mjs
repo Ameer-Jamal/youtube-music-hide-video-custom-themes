@@ -93,9 +93,13 @@ try {
   mkdirSync("docs/screenshots", { recursive: true });
   await page.screenshot({ path: "docs/screenshots/popup.png", fullPage: true });
   const host = await browser.newPage();
-  await host.setContent(
-    '<ytmusic-player-page><div class="content"><div id="main-panel">VIDEO</div><div id="side-panel"><div id="tab-renderer">QUEUE</div></div></div></ytmusic-player-page><ytmusic-player-bar><div class="volume-slider" aria-valuenow="80"></div></ytmusic-player-bar>',
+  await host.route("https://music.youtube.com/**", (route) =>
+    route.fulfill({
+      contentType: "text/html",
+      body: '<ytmusic-player-page><div class="content"><div id="main-panel">VIDEO</div><div id="side-panel"><div id="tab-renderer">QUEUE</div></div></div></ytmusic-player-page><ytmusic-player-bar><div class="volume-slider" aria-valuenow="80"></div></ytmusic-player-bar>',
+    }),
   );
+  await host.goto("https://music.youtube.com/");
   await host.evaluate(() => {
     window.chrome = {
       storage: {

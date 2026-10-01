@@ -84,6 +84,36 @@
         s[key] = Math.round(Math.max(min, Math.min(max, raw[key])));
     return s;
   }
+  function buildHomeCss(palette) {
+    // Home owns one gradient across the entire feed, rather than an artwork
+    // backdrop whose finite height ends at the first carousel. Route scoping
+    // preserves album/artist hero artwork and the separate player canvas.
+    const home = "html[data-ytm-home]";
+    return `
+      ${home} #browse-page { background: transparent !important; }
+      ${home} #browse-page > #background,
+      ${home} #browse-page > ytmusic-fullbleed-thumbnail-renderer,
+      ${home} ytmusic-browse-response > #background,
+      ${home} ytmusic-browse-response > ytmusic-fullbleed-thumbnail-renderer {
+        display: none !important;
+      }
+      ${home} ytmusic-browse-response {
+        min-height: 100vh;
+        background: linear-gradient(to bottom, ${palette.accent}18 0px, ${palette.accent}09 220px, ${palette.accent}00 620px), ${palette.background} !important;
+      }
+      ${home} ytmusic-browse-response #background-gradient,
+      ${home} ytmusic-browse-response .background-gradient {
+        background: none !important;
+      }
+      ${home} ytmusic-browse-response #header,
+      ${home} ytmusic-browse-response #contents,
+      ${home} ytmusic-browse-response #content,
+      ${home} ytmusic-browse-response ytmusic-section-list-renderer,
+      ${home} ytmusic-browse-response ytmusic-carousel-shelf-renderer {
+        background: transparent !important;
+      }
+    `;
+  }
   function buildCss(raw) {
     const s = normalize(raw);
     if (!s.enabled) return "";
@@ -93,16 +123,15 @@
       css += `
    html { --ytmusic-general-background-a: ${palette.background} !important; --ytmusic-general-background-b: ${palette.background} !important; --ytmusic-general-background-c: ${palette.background} !important; --ytmusic-general-background-d: ${palette.background} !important; --ytmusic-brand-background-solid: ${palette.player} !important; --yt-spec-base-background: ${palette.background} !important; --yt-spec-brand-background-solid: ${palette.background} !important; --ytmusic-color-white1: #f5f5f5; }
    html, body, ytmusic-app, ytmusic-app-layout > #content, ytmusic-nav-bar, ytmusic-tabs.stuck, ytmusic-player-page #side-panel, ytmusic-player-page #tabsContent, #sections.ytmusic-guide-renderer { background-color: ${palette.background} !important; }
-   /* Keep one canvas under the native header and browse shelves. YouTube's
-      artwork-derived background layer otherwise ends at the first shelf. */
-   ytmusic-app-layout, ytmusic-browse-response, ytmusic-player-page, ytmusic-search-page, ytmusic-guide-renderer { background: ${palette.background} !important; }
-   ytmusic-app > #background, #background.ytmusic-app, ytmusic-app-layout #background, ytmusic-browse-response > #background, ytmusic-browse-response #background-gradient, ytmusic-browse-response .background-gradient, ytmusic-player-page #background { background: none !important; }
-   ytmusic-browse-response #header, ytmusic-browse-response #contents, ytmusic-browse-response ytmusic-carousel-shelf-renderer, ytmusic-player-page #tab-renderer, ytmusic-player-page #tabsContent, ytmusic-player-page #side-panel { background: transparent !important; }
+   ytmusic-app-layout, ytmusic-player-page, ytmusic-search-page, ytmusic-guide-renderer { background: ${palette.background} !important; }
+   ytmusic-player-page #background { background: none !important; }
+   ytmusic-player-page #tab-renderer, ytmusic-player-page #tabsContent, ytmusic-player-page #side-panel { background: transparent !important; }
    ytmusic-nav-bar, ytmusic-tabs.stuck, ytmusic-guide-renderer #sections { background: ${palette.background} !important; }
    ytmusic-player-bar { background-color: ${palette.player} !important; }
    ytmusic-player-bar #progress-bar, ytmusic-player-bar .volume-slider { --paper-slider-active-color: ${palette.accent} !important; --paper-slider-knob-color: ${palette.accent} !important; }
    ::-webkit-scrollbar { width: 8px; height: 8px; } ::-webkit-scrollbar-thumb { background: ${palette.accent}66; border-radius: 12px; } ::-webkit-scrollbar-track { background: transparent; }
   `;
+    if (s.theme !== "YoutubeMusicDefault") css += buildHomeCss(palette);
     if (s.hideVideo)
       css += `
    ytmusic-player-page #main-panel { display: none !important; }

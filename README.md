@@ -26,7 +26,7 @@ CI checks every push and pull request and produces an unpacked **Extension-Packa
 
 For the first release:
 
-1. Run `npm run build` and upload `dist/youtube-music-hide-video-custom-themes-v1.0.1.zip` to a **new** Chrome Web Store item. Complete the listing using [store copy](docs/STORE-LISTING.md), authentic screenshots, and the [privacy policy](docs/PRIVACY.md).
+1. Run `npm run build` and upload `dist/youtube-music-hide-video-custom-themes-v1.0.2.zip` to a **new** Chrome Web Store item. Complete the listing using [store copy](docs/STORE-LISTING.md), authentic screenshots, and the [privacy policy](docs/PRIVACY.md).
 2. Enable Chrome Web Store API access and authorize the same service-account setup used by your Material Dark extension for this publisher.
 3. Create the GitHub environment **Publishing Env**. Add `CWS_EXTENSION_ID` with the **new item’s ID**, `CWS_PUBLISHER_ID`, and `CWS_SERVICE_ACCOUNT_JSON` (raw JSON or base64). Never use your ChatGPT extension’s item ID here.
 4. Run **Actions → Release → Run workflow** after the item is ready for API updates. Store approval is controlled by Google.

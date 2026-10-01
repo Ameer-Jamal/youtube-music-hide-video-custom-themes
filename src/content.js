@@ -5,6 +5,16 @@
   const readout = document.createElement("span");
   readout.className = "ytm-volume-percentage";
   readout.setAttribute("aria-hidden", "true");
+  function updateHomeRoute() {
+    if (!document.documentElement) return;
+    const home = location.pathname === "/" || location.pathname === "/home";
+    document.documentElement.toggleAttribute(
+      "data-ytm-home",
+      home && current.enabled && current.theme !== "YoutubeMusicDefault",
+    );
+  }
+  document.addEventListener("yt-navigate-finish", updateHomeRoute);
+  window.addEventListener("popstate", updateHomeRoute);
   function updateVolume() {
     if (!current.enabled || !current.showVolumePercentage) {
       readout.remove();
@@ -42,6 +52,7 @@
     volumeScheduled = true;
     requestAnimationFrame(() => {
       volumeScheduled = false;
+      updateHomeRoute();
       updateVolume();
     });
   });
@@ -52,6 +63,7 @@
     attributeFilter: ["aria-valuenow", "muted", "class", "id"],
   });
   function apply() {
+    updateHomeRoute();
     style.textContent = YTM.buildCss(current);
     updateVolume();
     if (document.documentElement && !style.isConnected)
