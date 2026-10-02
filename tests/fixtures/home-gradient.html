@@ -70,6 +70,11 @@
         font-size: 28px;
         margin: 0 0 22px;
       }
+      ytmusic-two-row-item-renderer {
+        display: block;
+        flex: none;
+        width: calc((var(--ytmusic-content-width, 900px) - 5 * 24px) / 6);
+      }
       .tiles {
         display: flex;
         gap: 20px;
@@ -118,9 +123,16 @@
                     </div></ytmusic-queue-header-renderer
                   >
                   <div class="tiles">
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                  </div></div></ytmusic-carousel-shelf-renderer
+                    <ytmusic-two-row-item-renderer
+                      ><div class="tile"></div>
+                      <span>Track title</span></ytmusic-two-row-item-renderer
+                    >
+                    <ytmusic-two-row-item-renderer
+                      ><div class="tile"></div>
+                      <span>Track title</span></ytmusic-two-row-item-renderer
+                    >
+                  </div>
+                </div></ytmusic-carousel-shelf-renderer
               ><ytmusic-carousel-shelf-renderer
                 class="style-scope ytmusic-section-list-renderer fullbleed"
                 ><div
@@ -128,9 +140,16 @@
                 >
                   <h2>Second shelf</h2>
                   <div class="tiles">
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                  </div></div></ytmusic-carousel-shelf-renderer
+                    <ytmusic-two-row-item-renderer
+                      ><div class="tile"></div>
+                      <span>Track title</span></ytmusic-two-row-item-renderer
+                    >
+                    <ytmusic-two-row-item-renderer
+                      ><div class="tile"></div>
+                      <span>Track title</span></ytmusic-two-row-item-renderer
+                    >
+                  </div>
+                </div></ytmusic-carousel-shelf-renderer
               ><ytmusic-carousel-shelf-renderer
                 class="style-scope ytmusic-section-list-renderer fullbleed"
                 ><div

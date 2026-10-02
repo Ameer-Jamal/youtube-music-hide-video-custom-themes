@@ -149,6 +149,15 @@ try {
       });
     assert.ok(Math.abs(layout.width - (viewport - guide - 76)) < 1);
     assert.ok(layout.right <= viewport);
+    const cards = await page
+      .locator("ytmusic-two-row-item-renderer")
+      .evaluateAll((elements) =>
+        elements.map((e) => e.getBoundingClientRect().width),
+      );
+    assert.ok(
+      cards.every((width) => width > 60),
+      "Every carousel card must retain a visible width",
+    );
   }
   await page.setViewportSize({ width: 1600, height: 800 });
   await page.evaluate(() => {
