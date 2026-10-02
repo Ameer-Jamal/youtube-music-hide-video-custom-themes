@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font: 16px system-ui;
+      }
+      ytmusic-app {
+        display: block;
+        --ytmusic-color-white1: #fff;
+        --yt-spec-text-primary: #fff;
+        color: #fff;
+      }
+      yt-formatted-string {
+        color: var(--ytmusic-color-white1);
+      }
+      yt-formatted-string.title,
+      ytmusic-guide-renderer a,
+      ytmusic-search-box input,
+      ytmusic-player-bar .title,
+      yt-icon {
+        color: #fff;
+      }
+      yt-icon {
+        display: inline-block;
+      }
+      yt-formatted-string {
+        display: block;
+      }
+      a {
+        text-decoration: none;
+      }
+      ytmusic {
+        display: block;
+      }
+      ytmusic-app-layout {
+        display: block;
+      }
+      #surfaces {
+        padding: 24px;
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 32px;
+      }
+      ytmusic-guide-renderer {
+        display: block;
+      }
+      ytmusic-search-box input {
+        padding: 12px;
+        background: transparent;
+        border: 1px solid #aaa;
+      }
+      ytmusic-chip-cloud-chip-renderer a {
+        display: inline-flex;
+        padding: 8px 16px;
+        margin: 4px;
+        align-items: center;
+      }
+      section {
+        padding: 20px;
+      }
+      h2 {
+        margin-top: 0;
+      }
+      .subtitle {
+        color: #aaa;
+      }
+      ytmusic-player-bar,
+      ytmusic-menu-popup-renderer {
+        display: block;
+        padding: 20px;
+      }
+      ytmusic-item-thumbnail-overlay-renderer {
+        display: block;
+        width: 180px;
+        padding: 20px;
+        background: #222;
+      }
+    </style>
+  </head>
+  <body>
+    <ytmusic-app
+      ><div id="surfaces">
+        <ytmusic-guide-renderer
+          ><a id="nav">Home</a
+          ><yt-icon id="nav-icon">⌂</yt-icon></ytmusic-guide-renderer
+        >
+        <div>
+          <ytmusic-search-box
+            ><input id="search" value="Search music"
+          /></ytmusic-search-box>
+          <section>
+            <ytmusic-carousel-shelf-renderer
+              ><yt-formatted-string id="heading" class="title"
+                >Listen again</yt-formatted-string
+              ><yt-formatted-string id="track" class="title"
+                >A favorite song</yt-formatted-string
+              >
+              <div class="subtitle">
+                <a id="artist">Sample artist</a>
+              </div></ytmusic-carousel-shelf-renderer
+            >
+          </section>
+          <section>
+            <ytmusic-player-page
+              ><yt-formatted-string id="queue" class="title"
+                >Up next</yt-formatted-string
+              ><ytmusic-chip-cloud-chip-renderer
+                ><div class="gradient-box">
+                  <a id="save" role="tab" aria-selected="false"
+                    ><yt-formatted-string>Save</yt-formatted-string></a
+                  >
+                </div></ytmusic-chip-cloud-chip-renderer
+              ><ytmusic-chip-cloud-chip-renderer selected
+                ><a id="selected" aria-selected="true"
+                  ><yt-formatted-string>All</yt-formatted-string></a
+                ></ytmusic-chip-cloud-chip-renderer
+              ></ytmusic-player-page
+            >
+          </section>
+          <ytmusic-menu-popup-renderer
+            ><yt-formatted-string id="menu" class="title"
+              >Add to playlist</yt-formatted-string
+            ></ytmusic-menu-popup-renderer
+          >
+          <ytmusic-item-thumbnail-overlay-renderer
+            ><yt-icon id="overlay">▶</yt-icon
+            ><yt-formatted-string id="overlay-text"
+              >Play</yt-formatted-string
+            ></ytmusic-item-thumbnail-overlay-renderer
+          >
+        </div>
+      </div>
+      <ytmusic-player-bar
+        ><yt-formatted-string id="player-title" class="title"
+          >Now playing</yt-formatted-string
+        ><span id="time" class="time-info">0:49 / 4:46</span
+        ><yt-icon id="volume">◖</yt-icon></ytmusic-player-bar
+      ></ytmusic-app
+    >
+  </body>
+</html>

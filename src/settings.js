@@ -266,18 +266,28 @@
     let css = "";
     if (s.theme !== "YoutubeMusicDefault")
       css += `
-   html { --ytmusic-background: ${palette.background} !important; --ytmusic-general-background-a: ${palette.background} !important; --ytmusic-general-background-b: ${palette.background} !important; --ytmusic-general-background-c: ${palette.background} !important; --ytmusic-general-background-d: ${palette.background} !important; --ytmusic-brand-background-solid: ${palette.player} !important; --yt-spec-base-background: ${palette.background} !important; --yt-spec-brand-background-solid: ${palette.background} !important; --ytmusic-color-white1: ${tone.text} !important; --ytmusic-color-white2: ${tone.secondary} !important; --ytmusic-color-white3: ${tone.secondary} !important; --ytmusic-color-grey1: ${tone.text} !important; --ytmusic-color-grey2: ${tone.secondary} !important; --ytmusic-color-grey3: ${tone.secondary} !important;
+   html, body, ytmusic-app, ytmusic-app-layout, ytmusic-nav-bar, ytmusic-guide-renderer, ytmusic-browse-response, ytmusic-search-page, ytmusic-player-page, ytmusic-menu-popup-renderer, tp-yt-paper-dialog { --ytm-fg: ${tone.text}; --ytm-muted: ${tone.secondary}; --ytmusic-background: ${palette.background} !important; --ytmusic-general-background-a: ${palette.background} !important; --ytmusic-general-background-b: ${palette.background} !important; --ytmusic-general-background-c: ${palette.background} !important; --ytmusic-general-background-d: ${palette.background} !important; --ytmusic-brand-background-solid: ${palette.player} !important; --yt-spec-base-background: ${palette.background} !important; --yt-spec-brand-background-solid: ${palette.background} !important; --ytmusic-color-white1: ${tone.text} !important; --ytmusic-color-white2: ${tone.secondary} !important; --ytmusic-color-white3: ${tone.secondary} !important; --ytmusic-color-grey1: ${tone.text} !important; --ytmusic-color-grey2: ${tone.secondary} !important; --ytmusic-color-grey3: ${tone.secondary} !important;
    --ytmusic-text-primary: ${tone.text} !important; --ytmusic-text-secondary: ${tone.secondary} !important; --yt-spec-text-primary: ${tone.text} !important; --yt-spec-text-secondary: ${tone.secondary} !important;
-   --ytmusic-paper-item: ${tone.text} !important; --ytmusic-paper-item-hover: ${palette.accent}22 !important; --ytmusic-paper-item-focus: ${palette.accent}33 !important;
+   --ytmusic-paper-item: ${tone.text} !important; --paper-item-color: ${tone.text} !important; --primary-text-color: ${tone.text} !important; --secondary-text-color: ${tone.secondary} !important; --primary-color: ${palette.accent} !important; --light-theme-text-color: ${tone.text} !important; --dark-theme-text-color: ${tone.text} !important; --ytmusic-paper-item-hover: ${palette.accent}22 !important; --ytmusic-paper-item-focus: ${palette.accent}33 !important;
    --ytmusic-menu-background: ${palette.player} !important; --ytmusic-dialog-background: ${palette.player} !important;
    --ytmusic-play-button-background-color: ${palette.accent} !important; --ytmusic-play-button-active-background-color: ${palette.accent} !important; --ytmusic-play-button-icon-color: ${tone.onAccent} !important;
    --yt-spec-icon-active-other: ${tone.text} !important; --yt-spec-icon-inactive: ${tone.secondary} !important; color-scheme: ${tone.light ? "light" : "dark"}; color: ${tone.text}; }
+   /* Direct component colors also cover legacy hard-coded white declarations.
+      Surface tokens keep selected chips and artwork overlays independent. */
+   ytmusic-app :is(yt-formatted-string, a, h1, h2, h3, input, textarea), ytmusic-menu-popup-renderer :is(yt-formatted-string, a, tp-yt-paper-item) { color: var(--ytm-fg, ${tone.text}) !important; }
+   ytmusic-app :is(yt-icon, tp-yt-paper-icon-button, yt-icon-button) { color: var(--ytm-fg, ${tone.text}) !important; }
+   ytmusic-app :is(.subtitle, .secondary-flex-columns, .byline, .time-info, #subtitle), ytmusic-app :is(.subtitle, .secondary-flex-columns, .byline, #subtitle) :is(yt-formatted-string, a) { color: var(--ytm-muted, ${tone.secondary}) !important; }
+   ytmusic-search-box input { color: ${tone.text} !important; caret-color: ${palette.accent}; }
+   ytmusic-search-box input::placeholder { color: ${tone.secondary} !important; opacity: 1; }
+   ytmusic-menu-popup-renderer, tp-yt-paper-dialog, ytmusic-search-box #suggestions { --ytm-fg: ${tone.playerText}; --ytm-muted: ${tone.playerText}b3; background: ${palette.player} !important; color: ${tone.playerText} !important; }
+   ytmusic-item-thumbnail-overlay-renderer, ytmusic-thumbnail-overlay-renderer { --ytm-fg: #ffffff; --ytm-muted: #ffffff; }
+   ytmusic-immersive-header-renderer { --ytm-fg: #ffffff; --ytm-muted: #dedede; }
    html, body, ytmusic-app, ytmusic-app-layout > #content, ytmusic-nav-bar, ytmusic-tabs.stuck, ytmusic-player-page #side-panel, ytmusic-player-page #tabsContent, #sections.ytmusic-guide-renderer { background-color: ${palette.background} !important; }
    ytmusic-app-layout, ytmusic-player-page, ytmusic-search-page, ytmusic-guide-renderer { background: ${palette.background} !important; }
    ytmusic-player-page #background { background: none !important; }
    ytmusic-player-page #tab-renderer, ytmusic-player-page #tabsContent, ytmusic-player-page #side-panel { background: transparent !important; }
    ytmusic-nav-bar, ytmusic-tabs.stuck, ytmusic-guide-renderer #sections { background: ${palette.background} !important; }
-   ytmusic-player-bar { background-color: ${palette.player} !important; color: ${tone.playerText} !important; --ytmusic-text-primary: ${tone.playerText} !important; --ytmusic-text-secondary: ${tone.playerText}b3 !important; --ytmusic-color-white1: ${tone.playerText} !important; --ytmusic-color-white2: ${tone.playerText}b3 !important; }
+   ytmusic-player-bar { --ytm-fg: ${tone.playerText}; --ytm-muted: ${tone.playerText}b3; background-color: ${palette.player} !important; color: ${tone.playerText} !important; --ytmusic-text-primary: ${tone.playerText} !important; --ytmusic-text-secondary: ${tone.playerText}b3 !important; --ytmusic-color-white1: ${tone.playerText} !important; --ytmusic-color-white2: ${tone.playerText}b3 !important; }
    ytmusic-player-bar :is(.play-pause-button, #play-pause-button) { background: ${palette.accent} !important; color: ${tone.onAccent} !important; border-radius: 50%; }
    ytmusic-player-bar :is(.left-controls, #left-controls) :is(tp-yt-paper-icon-button, yt-icon-button, button) { color: ${palette.accent} !important; }
    ytmusic-player-bar :is(.play-pause-button, #play-pause-button) yt-icon { color: ${tone.onAccent} !important; }
@@ -286,6 +296,7 @@
    ytmusic-chip-cloud-chip-renderer .gradient-box { background: none !important; }
    ytmusic-chip-cloud-chip-renderer a { border: 1px solid ${palette.accent}55 !important; }
    ytmusic-chip-cloud-chip-renderer a:hover { background: ${palette.accent}30 !important; }
+   ytmusic-chip-cloud-chip-renderer[selected], ytmusic-chip-cloud-chip-renderer a[aria-selected="true"], ytmusic-play-button-renderer { --ytm-fg: ${tone.onAccent}; --ytm-muted: ${tone.onAccent}; }
    ytmusic-chip-cloud-chip-renderer[selected] a, ytmusic-chip-cloud-chip-renderer a[aria-selected="true"], ytmusic-play-button-renderer #play-button { background: ${palette.accent} !important; color: ${tone.onAccent} !important; }
    ytmusic-chip-cloud-chip-renderer :is(yt-icon, yt-formatted-string) { color: inherit !important; }
    ytmusic-guide-entry-renderer[active] { background: ${palette.accent}22 !important; border-radius: 10px; }

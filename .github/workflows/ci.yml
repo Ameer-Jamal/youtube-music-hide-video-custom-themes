@@ -25,6 +25,9 @@ jobs:
       - name: Install browser for integration checks
         run: npx playwright install --with-deps chromium
 
+      - name: Light theme component contrast regression
+        run: npm run test:light
+
       - name: Home gradient pixel regression
         run: npm run test:home
 

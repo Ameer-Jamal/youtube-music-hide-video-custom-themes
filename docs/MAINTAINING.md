@@ -18,7 +18,7 @@ CI checks every push and pull request and produces an unpacked **Extension-Packa
 
 For the first release:
 
-1. Run `npm run build` and upload `dist/youtube-music-hide-video-custom-themes-v1.1.0.zip` to a **new** Chrome Web Store item. Complete the listing using [store copy](STORE-LISTING.md), authentic screenshots, and the [privacy policy](PRIVACY.md).
+1. Run `npm run build` and upload `dist/youtube-music-hide-video-custom-themes-v1.1.1.zip` to a **new** Chrome Web Store item. Complete the listing using [store copy](STORE-LISTING.md), authentic screenshots, and the [privacy policy](PRIVACY.md).
 2. Enable Chrome Web Store API access and authorize the same service-account setup used by your Material Dark extension for this publisher.
 3. Create the GitHub environment **Publishing Env**. Add `CWS_EXTENSION_ID` with the **new item’s ID**, `CWS_PUBLISHER_ID`, and `CWS_SERVICE_ACCOUNT_JSON` (raw JSON or base64). Never use your ChatGPT extension’s item ID here.
 4. Run **Actions → Release → Run workflow** after the item is ready for API updates. Store approval is controlled by Google.
@@ -34,3 +34,5 @@ The popup credit shows the loaded extension version. After updating an unpacked 
 `npm run check` checks syntax, assets, permission scope, version consistency, input validation, palette generation, and reversible toggles. `npm run test:browser` runs popup and content-script integration checks in Chromium using synthetic YouTube Music markup; `npm run test:extension` installs the actual MV3 package in an isolated Chromium profile and checks real storage, manifest injection, cross-tab updates, and reload persistence. Neither substitutes for testing the current logged-in site.
 
 Before store submission, check a real Music account: open the player queue and lyrics, toggle video hiding on/off, play/pause/skip, change volume, resize the window, navigate between pages, try each palette, and turn the extension off. Site markup can change independently of releases.
+
+`npm run test:light` reproduces component-local and hard-coded white text, then checks navigation, search, feed, queue, menus, player labels, selected chips, and artwork overlays across all ten light themes.
