@@ -307,9 +307,12 @@
     if (s.theme !== "YoutubeMusicDefault") css += buildHomeCss(palette);
     if (s.wideHome)
       css += `
-      html[data-ytm-wide-home] ytmusic-browse-response { --ytmusic-content-width: 100%; --ytmusic-content-width-extra-wide: 100%; }
-      html[data-ytm-wide-home] ytmusic-browse-response #content-wrapper { max-width: none !important; width: 100% !important; }
-      html[data-ytm-wide-home] ytmusic-browse-response .ytmusic-shelf { width: auto !important; max-width: none !important; box-sizing: border-box; margin-inline: 0 !important; padding-inline: clamp(16px, 3vw, 48px) !important; }
+      /* Native carousel and grid calculations require a viewport length, not
+         a percentage. Keep the wrapper's guide offset and shelf geometry. */
+      html[data-ytm-wide-home] ytmusic-browse-response {
+        --ytmusic-content-width: max(0px, calc(100vw - var(--ytmusic-guide-width, 0px) - var(--ytmusic-scrollbar-width, 12px) - 64px));
+        --ytmusic-content-width-extra-wide: var(--ytmusic-content-width);
+      }
     `;
     if (s.hideVideo)
       css += `

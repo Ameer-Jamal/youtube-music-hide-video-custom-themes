@@ -125,6 +125,36 @@ try {
       .evaluate((e) => e.getBoundingClientRect().width)) >
       standardWidth + 400,
   );
+  // Reproduce the native guide offset: wide shelves must fit the remaining
+  // viewport and retain carousel lengths through responsive sidebar changes.
+  for (const [viewport, guide] of [
+    [1600, 240],
+    [1600, 72],
+    [700, 0],
+  ]) {
+    await page.setViewportSize({ width: viewport, height: 800 });
+    await page.evaluate((guide) => {
+      const wrapper = document.querySelector("#content-wrapper");
+      document
+        .querySelector("#browse-page")
+        .style.setProperty("--ytmusic-guide-width", `${guide}px`);
+      wrapper.style.marginInlineStart = `${guide}px`;
+    }, guide);
+    const layout = await page
+      .locator(".ytmusic-shelf")
+      .first()
+      .evaluate((e) => {
+        const rect = e.getBoundingClientRect();
+        return { width: rect.width, right: rect.right };
+      });
+    assert.ok(Math.abs(layout.width - (viewport - guide - 76)) < 1);
+    assert.ok(layout.right <= viewport);
+  }
+  await page.setViewportSize({ width: 1600, height: 800 });
+  await page.evaluate(() => {
+    document.querySelector("#content-wrapper").removeAttribute("style");
+    document.querySelector("#browse-page").removeAttribute("style");
+  });
   await page.evaluate(() => {
     history.pushState({}, "", "/browse/album");
     document.dispatchEvent(new Event("yt-navigate-finish"));
