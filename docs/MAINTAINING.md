@@ -36,3 +36,9 @@ The popup credit shows the loaded extension version. After updating an unpacked 
 Before store submission, check a real Music account: open the player queue and lyrics, toggle video hiding on/off, play/pause/skip, change volume, resize the window, navigate between pages, try each palette, and turn the extension off. Site markup can change independently of releases.
 
 `npm run test:light` reproduces component-local and hard-coded white text, then checks navigation, search, feed, queue, menus, player labels, selected chips, and artwork overlays across all ten light themes.
+
+### Release destinations
+
+Run the Release workflow on main and choose `github` to run the checks, build the ZIP from the checked-out commit, and create a GitHub release. This is the default and requires no Chrome Web Store IDs.
+
+Choose `chrome-web-store` once the publisher and extension IDs are configured in Publishing Env. That path also checks the store version and state, uploads the same tested ZIP, and submits it for review. A GitHub release by itself does not submit a store update or update unpacked local installations.

@@ -2,6 +2,15 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      destination:
+        description: Release destination
+        required: true
+        default: github
+        type: choice
+        options:
+          - github
+          - chrome-web-store
 
 concurrency:
   group: extension-release
@@ -49,7 +58,12 @@ jobs:
           CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
           CWS_PUBLISHER_ID: ${{ secrets.CWS_PUBLISHER_ID }}
           CWS_SERVICE_ACCOUNT_JSON: ${{ secrets.CWS_SERVICE_ACCOUNT_JSON }}
-        run: node scripts/chrome-web-store-release.mjs sync-version
+        run: |
+          if [ "${{ inputs.destination }}" = "chrome-web-store" ]; then
+            node scripts/chrome-web-store-release.mjs sync-version
+          else
+            node --input-type=module -e 'import fs from "node:fs"; const {version}=JSON.parse(fs.readFileSync("manifest.json", "utf8")); fs.appendFileSync(process.env.GITHUB_OUTPUT, `version=${version}\nchanged=false\nstore_blocked=false\n`);'
+          fi
 
       - name: Release blocked summary
         if: steps.sync_version.outputs.store_blocked == 'true'
@@ -77,6 +91,11 @@ jobs:
           git commit -m "chore: release v${{ steps.sync_version.outputs.version }}"
           git push origin HEAD:main
 
+      - name: Record packaged commit
+        id: source
+        if: steps.sync_version.outputs.store_blocked != 'true'
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Package extension
         if: steps.sync_version.outputs.store_blocked != 'true'
         run: npm run zip
@@ -99,13 +118,13 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.sync_version.outputs.version }}
-          target_commitish: main
+          target_commitish: ${{ steps.source.outputs.sha }}
           name: v${{ steps.sync_version.outputs.version }}
           generate_release_notes: true
           files: dist/youtube-music-hide-video-custom-themes-v${{ steps.sync_version.outputs.version }}.zip
 
       - name: Upload package to Chrome Web Store
-        if: steps.sync_version.outputs.store_blocked != 'true'
+        if: inputs.destination == 'chrome-web-store' && steps.sync_version.outputs.store_blocked != 'true'
         id: cws_upload
         env:
           CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
