@@ -413,22 +413,114 @@ input:disabled {
 }
 
 .coffee-link {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 10px;
-  padding: 10px 12px;
-  border: 1px solid #ffffff20;
-  border-radius: 8px;
-  font-size: 11px;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 14px 16px;
+  border: 1px solid #ffe6a780;
+  border-radius: 12px;
+  color: #35200c;
+  background: linear-gradient(115deg, #ffe9aa, #ffc96b 55%, #ffb85d);
+  box-shadow:
+    0 4px 18px #f5a62320,
+    inset 0 1px 0 #fff7dbb3;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
-.coffee-link span {
-  color: var(--ui-muted, #a9a5b5);
+.coffee-link::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 35%,
+    #ffffff60 50%,
+    transparent 65%
+  );
+  transform: translateX(-130%);
+  animation: coffee-shimmer 7s ease-in-out infinite;
+  pointer-events: none;
+}
+.coffee-icon {
+  font-size: 24px;
+  display: inline-block;
+  animation: coffee-sway 7s ease-in-out infinite;
+}
+.coffee-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+}
+.coffee-copy strong {
+  font-size: 13px;
+  font-weight: 750;
+}
+.coffee-copy > span {
   font-size: 10px;
+  color: #634018;
+}
+.coffee-arrow {
+  font-size: 20px;
+  transition: transform 180ms ease;
 }
 .coffee-link:hover,
 .coffee-link:focus-visible {
-  border-color: var(--ui-accent);
-  background: color-mix(in srgb, var(--ui-accent) 8%, transparent);
+  transform: translateY(-2px);
+  box-shadow:
+    0 7px 24px #f5a62340,
+    inset 0 1px 0 #fff7dbb3;
+}
+.coffee-link:focus-visible {
+  outline: 2px solid #fff5d6;
+  outline-offset: 3px;
+}
+.coffee-link:hover .coffee-arrow {
+  transform: translate(2px, -2px);
+}
+@keyframes coffee-shimmer {
+  0%,
+  68% {
+    transform: translateX(-130%);
+  }
+  88%,
+  100% {
+    transform: translateX(130%);
+  }
+}
+@keyframes coffee-sway {
+  0%,
+  68%,
+  88%,
+  100% {
+    transform: rotate(0);
+  }
+  74% {
+    transform: rotate(-10deg);
+  }
+  81% {
+    transform: rotate(8deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .coffee-link,
+  .coffee-arrow {
+    transition: none;
+  }
+  .coffee-link::before,
+  .coffee-icon {
+    animation: none;
+  }
+  .coffee-link:hover,
+  .coffee-link:focus-visible,
+  .coffee-link:hover .coffee-arrow {
+    transform: none;
+  }
 }
