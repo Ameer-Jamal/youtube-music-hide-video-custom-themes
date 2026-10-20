@@ -43,6 +43,11 @@ try {
     };
   });
   await page.goto("https://extension.test/popup.html");
+  assert.equal(await page.locator("#nonstop").isChecked(), true);
+  await page.locator("#nonstop").uncheck();
+  await page.waitForFunction(() => window.savedSettings?.nonstop === false);
+  await page.locator("#nonstop").check();
+  await page.waitForFunction(() => window.savedSettings?.nonstop === true);
   assert.equal(
     await page.locator(".brand strong").textContent(),
     "YouTube Music Customizer",

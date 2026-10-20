@@ -31,6 +31,9 @@ jobs:
       - name: Home gradient pixel regression
         run: npm run test:home
 
+      - name: Nonstop listening regression
+        run: npm run test:nonstop
+
       - name: Browser integration checks
         run: npm run test:browser
 

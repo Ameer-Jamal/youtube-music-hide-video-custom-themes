@@ -184,6 +184,7 @@
     padding: 16,
     hidePromos: false,
     wideHome: false,
+    nonstop: true,
   };
   function normalize(raw = {}) {
     if (!raw || typeof raw !== "object" || Array.isArray(raw)) raw = {};

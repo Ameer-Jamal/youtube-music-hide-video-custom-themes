@@ -68,7 +68,82 @@
     attributes: true,
     attributeFilter: ["aria-valuenow", "muted", "class", "id"],
   });
+  // Observe the dedicated inactivity prompt instead of spoofing page activity
+  // or calling media.play(), which could undo an intentional manual pause.
+  const confirmedPrompts = new Map();
+  let nonstopObserver;
+  function visiblePrompt(button) {
+    return (
+      button.isConnected &&
+      !button.closest('[hidden], [aria-hidden="true"]') &&
+      button.getClientRects().length > 0 &&
+      getComputedStyle(button).visibility !== "hidden" &&
+      getComputedStyle(button).visibility !== "collapse"
+    );
+  }
+  function confirmInactivityPrompt() {
+    for (const [button] of confirmedPrompts) {
+      if (!visiblePrompt(button)) confirmedPrompts.delete(button);
+    }
+    if (!current.enabled || !current.nonstop) return;
+    for (const prompt of document.querySelectorAll(
+      "tp-yt-paper-dialog ytmusic-you-there-renderer",
+    )) {
+      // dialog-confirm is structural and works regardless of the UI language.
+      const button = prompt.querySelector(
+        "[dialog-confirm] button, button[dialog-confirm]",
+      );
+      if (
+        !button ||
+        button.disabled ||
+        button.getAttribute("aria-disabled") === "true" ||
+        !visiblePrompt(button) ||
+        confirmedPrompts.has(button)
+      )
+        continue;
+      confirmedPrompts.set(button, true);
+      button.click();
+    }
+  }
+  function updateNonstop() {
+    if (!current.enabled || !current.nonstop) {
+      nonstopObserver?.disconnect();
+      nonstopObserver = undefined;
+      confirmedPrompts.clear();
+      return;
+    }
+    if (!nonstopObserver) {
+      nonstopObserver = new MutationObserver((records) => {
+        // Polymer can detach and reuse the same dialog and confirmation button.
+        for (const record of records) {
+          for (const removed of record.removedNodes) {
+            for (const [button] of confirmedPrompts) {
+              if (removed === button || removed.contains(button))
+                confirmedPrompts.delete(button);
+            }
+          }
+        }
+        confirmInactivityPrompt();
+      });
+      nonstopObserver.observe(document, {
+        subtree: true,
+        childList: true,
+        attributes: true,
+        attributeFilter: [
+          "hidden",
+          "aria-hidden",
+          "aria-disabled",
+          "disabled",
+          "opened",
+          "style",
+          "class",
+        ],
+      });
+    }
+    confirmInactivityPrompt();
+  }
   function apply() {
+    updateNonstop();
     updateHomeRoute();
     style.textContent = YTM.buildCss(current);
     updateVolume();

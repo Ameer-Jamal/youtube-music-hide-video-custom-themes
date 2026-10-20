@@ -48,3 +48,5 @@ Palette previews use illustrative sample tracks. The controls below are captured
 ## Credits and license
 
 Based on Ameer Jamal’s **YouTube Music Transformer: Remove Video And Customize Colors** userstyle. Extension code is source-available under [LICENSE](LICENSE). Original userstyle copies retain CC BY-ND 4.0.
+
+Nonstop listening automatically confirms YouTube Music’s “Continue watching?” prompt. It is on by default and can be switched off in the popup. Manually pausing playback still works.
